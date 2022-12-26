@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/article_nav_graph"
+    app:startDestination="@id/articlesFragment">
+
+    <fragment
+        android:id="@+id/articlesFragment"
+        android:name="com.tridev.articles.ui.ArticlesFragment"
+        android:label="fragment_articles"
+        tools:layout="@layout/fragment_articles">
+        <action
+            android:id="@+id/action_articlesFragment_to_articleDetailsFragment"
+            app:destination="@id/articleDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/articleDetailsFragment"
+        android:name="com.tridev.articles.ui.ArticleDetailsFragment"
+        android:label="fragment_article_details"
+        tools:layout="@layout/fragment_article_details" />
+    <fragment
+        android:id="@+id/searchArticleFragment"
+        android:name="com.tridev.articles.ui.SearchArticleFragment"
+        android:label="fragment_search_article"
+        tools:layout="@layout/fragment_search_article">
+        <action
+            android:id="@+id/action_searchArticleFragment_to_articleDetailsFragment"
+            app:destination="@id/articleDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/articleSavedFragment"
+        android:name="com.tridev.articles.ui.ArticleSavedFragment"
+        android:label="ArticleSavedFragment">
+        <action
+            android:id="@+id/action_articleSavedFragment_to_articleDetailsFragment"
+            app:destination="@id/articleDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+</navigation>

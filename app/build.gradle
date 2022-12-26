@@ -1,0 +1,84 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs.kotlin'
+}
+
+android {
+    namespace 'com.tridev.articles'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.tridev.articles"
+        minSdk 21
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    buildFeatures{
+        viewBinding true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    implementation (Dependencies.core)
+    implementation (Dependencies.appCompat)
+    implementation (Dependencies.androidMaterial)
+    implementation (Dependencies.constraintLayout)
+    implementation (TestImplementation.junit)
+    implementation (AndroidTestImplementation.junit)
+    implementation (AndroidTestImplementation.espresso)
+
+
+    implementation (Navigation.navigation)
+    implementation (Navigation.navigationFragment)
+
+    implementation DaggerHilt.hilt
+    kapt DaggerHilt.hiltAndroidCompiler
+    kapt DaggerHilt.hiltCompiler
+
+    implementation Retrofit.retrofit
+    implementation Retrofit.gsonConvertor
+    implementation Retrofit.okHttp
+
+    implementation(Room.room)
+    kapt(Room.roomCompiler)
+
+    implementation(Coroutines.coroutineCore)
+    implementation(Coroutines.coroutineAndroid)
+    implementation(ViewModel.lifecycleViewModel)
+    implementation(ViewModel.lifeCycleRuntime)
+    implementation(LiveData.livedata)
+
+    implementation(ViewModelDelegate.viewModelDelegate)
+
+    implementation(Glide.glide)
+    kapt(Glide.annotationProcessor)
+
+    implementation(CircularProgressBar.swipeRefresh)
+
+
+
+
+
+}
