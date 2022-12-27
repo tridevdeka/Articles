@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tridev.articles.model.Article
 import com.tridev.articles.model.ArticleResponse
-import com.tridev.articles.model.Source
 import com.tridev.articles.repository.ArticleRepository
 import com.tridev.articles.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,9 +21,16 @@ class ArticleViewModel @Inject constructor(private val repository: ArticleReposi
     private val _articles = MutableLiveData<Resource<ArticleResponse>>()
     var articles: LiveData<Resource<ArticleResponse>> = _articles
 
+    private val _sharedArticle = MutableLiveData<Article>()
+    val sharedArticle = _sharedArticle
+
 
     init {
         getArticles()
+    }
+
+    fun shareArticle(article: Article) {
+        _sharedArticle.postValue(article)
     }
 
     private fun getArticles() {
@@ -41,5 +48,22 @@ class ArticleViewModel @Inject constructor(private val repository: ArticleReposi
             }
         }
         return Resource.Error(response.message())
+    }
+
+
+    fun saveArticle(article: Article) {
+        viewModelScope.launch {
+            repository.insert(article)
+        }
+    }
+
+    fun getSavedArticles(): LiveData<List<Article>> {
+        return repository.getSavedArticle()
+    }
+
+    fun deleteArticle(article: Article) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteArticles(article)
+        }
     }
 }

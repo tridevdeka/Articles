@@ -2,24 +2,32 @@ package com.tridev.articles.ui
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.tridev.articles.R
 import com.tridev.articles.databinding.FragmentArticlesBinding
+import com.tridev.articles.model.Article
+import com.tridev.articles.ui.adapter.ArticlesAdapter
+import com.tridev.articles.utils.MarginDecoration
 import com.tridev.articles.utils.Resource
 import com.tridev.articles.viewmodel.ArticleViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ArticlesFragment : Fragment() {
+class ArticlesFragment : Fragment(), ArticlesAdapter.ClickListener {
 
     private lateinit var mBinding: FragmentArticlesBinding
-    private val viewModel: ArticleViewModel by viewModels()
+    private val viewModel: ArticleViewModel by activityViewModels()
     val TAG: String = this.javaClass.simpleName
+    private lateinit var articlesAdapter: ArticlesAdapter
 
 
     override fun onCreateView(
@@ -34,25 +42,55 @@ class ArticlesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setUpRecyclerView()
         setUpObserver()
+    }
+
+    private fun setUpRecyclerView() {
+        articlesAdapter = ArticlesAdapter(requireActivity(), this)
+        mBinding.rvArticles.apply {
+            addItemDecoration(MarginDecoration(requireActivity(), R.dimen.grid_margin))
+            layoutManager = LinearLayoutManager(requireActivity())
+            adapter = articlesAdapter
+        }
+
     }
 
     private fun setUpObserver() {
         viewModel.articles.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Resource.Error -> {
+                    hideProgressBar()
                     Log.d(TAG, it.message.toString())
                 }
                 is Resource.Loading -> {
-
+                    showProgressBar()
                 }
                 is Resource.Success -> {
-                    it.data?.let {response->
+                    hideProgressBar()
+                    it.data?.let { response ->
+                        articlesAdapter.differ.submitList(response.articles)
                         Log.d(TAG, response.totalResults.toString())
                     }
                 }
             }
         })
+    }
+
+    private fun showProgressBar() {
+        mBinding.progressBar.visibility = VISIBLE
+    }
+
+    private fun hideProgressBar() {
+        mBinding.progressBar.visibility = GONE
+    }
+
+    private fun passData(article: Article) {
+        viewModel.shareArticle(article)
+        findNavController().navigate(R.id.action_articlesFragment_to_articleDetailsFragment)
+    }
+
+    override fun onClick(article: Article) {
+        passData(article)
     }
 }

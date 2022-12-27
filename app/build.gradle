@@ -77,6 +77,12 @@ dependencies {
 
     implementation(CircularProgressBar.swipeRefresh)
 
+    implementation(RoundedImageView.roundedImage)
+
+
+    implementation(TestImplementation.truth)
+    implementation(AndroidTestImplementation.truth)
+
 
 
 

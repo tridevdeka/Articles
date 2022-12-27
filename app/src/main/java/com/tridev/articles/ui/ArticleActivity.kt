@@ -1,9 +1,10 @@
 package com.tridev.articles.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -11,6 +12,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.tridev.articles.R
 import com.tridev.articles.databinding.ActivityArticleBinding
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class ArticleActivity : AppCompatActivity() {
@@ -21,6 +23,10 @@ class ArticleActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding = ActivityArticleBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
+
+        val toolbar = findViewById<View>(com.tridev.articles.R.id.toolbar) as Toolbar
+        setSupportActionBar(toolbar)
+
         setupNav()
     }
 
@@ -32,9 +38,19 @@ class ArticleActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.articlesFragment -> showBottomNav()
-                R.id.searchArticleFragment -> showBottomNav()
-                R.id.articleSavedFragment -> showBottomNav()
+                R.id.articlesFragment -> {
+                    showBottomNav()
+                    supportActionBar?.title = "Articles"
+                }
+                R.id.searchArticleFragment -> {
+                    showBottomNav()
+                    supportActionBar?.title = "Search Articles"
+
+                }
+                R.id.articleSavedFragment -> {
+                    showBottomNav()
+                    supportActionBar?.title = "Saved Articles"
+                }
                 else -> {
                     hideBottomNav()
                 }
@@ -51,6 +67,7 @@ class ArticleActivity : AppCompatActivity() {
     private fun hideBottomNav() {
         mBinding.bottomNavigationView.visibility = View.GONE
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = null
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -33,6 +33,9 @@ object Versions {
     const val lottieAnimations = "3.4.2"
 
     const val timber = "4.5.1"
+    const val makeraman = "2.3.0"
+
+    const val truth="1.1.3"
 
 }
 
@@ -55,11 +58,13 @@ object Navigation {
 
 object TestImplementation {
     const val junit = "junit:junit:${Versions.testImplJunit}"
+    const val truth = "com.google.truth:truth:${Versions.truth}"
 }
 
 object AndroidTestImplementation {
     const val junit = "androidx.test.ext:junit:${Versions.androidTestImplJunit}"
     const val espresso = "androidx.test.espresso:espresso-core:${Versions.androidTestEspresso}"
+    const val truth = "com.google.truth:truth:${Versions.truth}"
 
 }
 
@@ -118,4 +123,9 @@ object CircularProgressBar {
 
 object LottieAnimations {
     const val lottieAnimations = "com.airbnb.android:lottie:${Versions.lottieAnimations}"
+}
+
+object RoundedImageView{
+    const val roundedImage="com.makeramen:roundedimageview:${Versions.makeraman}"
+
 }
