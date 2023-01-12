@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.tridev.articles.model.Article
 
-@Database(entities = [Article::class], version = 2, exportSchema = false)
+@Database(entities = [Article::class], version = 4, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class ArticleDatabase : RoomDatabase() {
 

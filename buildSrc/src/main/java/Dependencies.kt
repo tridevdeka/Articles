@@ -11,6 +11,7 @@ object Versions {
     const val navigation = "2.5.3"
 
     const val retrofit = "2.9.0"
+    const val loggingInterceptor = "5.0.0-alpha.6"
     const val gsonConvertor = "2.9.0"
     const val okHttp = "4.9.0"
     const val scalarConvertor = "2.1.0"
@@ -19,11 +20,11 @@ object Versions {
 
     const val lifecycleVersions = "2.5.1"
 
-    const val glide = "4.12.0"
+    const val glide = "4.13.2"
 
     const val viewModelDelegate = "1.6.0"
 
-    const val dagger = "2.44"
+    const val dagger = "2.44.2"
     const val hiltCompiler = "1.0.0"
 
     const val roomVersion = "2.4.3"
@@ -35,7 +36,7 @@ object Versions {
     const val timber = "4.5.1"
     const val makeraman = "2.3.0"
 
-    const val truth="1.1.3"
+    const val truth = "1.1.3"
 
 }
 
@@ -59,6 +60,9 @@ object Navigation {
 object TestImplementation {
     const val junit = "junit:junit:${Versions.testImplJunit}"
     const val truth = "com.google.truth:truth:${Versions.truth}"
+    const val coroutine =
+        "org.jetbrains.kotlinx:kotlinx-coroutines-test:$${Versions.kotlinCoroutines}"
+
 }
 
 object AndroidTestImplementation {
@@ -75,6 +79,9 @@ object Retrofit {
     const val okHttp = "com.squareup.okhttp3:okhttp:${Versions.okHttp}"
     const val scalersConvertors =
         "com.squareup.retrofit2:converter-scalars:${Versions.scalarConvertor}"
+    const val loggingInterceptor =
+        "com.squareup.okhttp3:logging-interceptor:${Versions.loggingInterceptor}"
+
 }
 
 object Coroutines {
@@ -109,6 +116,7 @@ object DaggerHilt {
     const val hilt = "com.google.dagger:hilt-android:${Versions.dagger}"
     const val hiltAndroidCompiler = "com.google.dagger:hilt-android-compiler:${Versions.dagger}"
     const val hiltCompiler = "androidx.hilt:hilt-compiler:${Versions.hiltCompiler}"
+    const val hiltWorker = "androidx.hilt:hilt-work:${Versions.hiltCompiler}"
 }
 
 object Room {
@@ -125,7 +133,7 @@ object LottieAnimations {
     const val lottieAnimations = "com.airbnb.android:lottie:${Versions.lottieAnimations}"
 }
 
-object RoundedImageView{
-    const val roundedImage="com.makeramen:roundedimageview:${Versions.makeraman}"
+object RoundedImageView {
+    const val roundedImage = "com.makeramen:roundedimageview:${Versions.makeraman}"
 
 }

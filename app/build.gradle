@@ -16,6 +16,7 @@ android {
         targetSdk 33
         versionCode 1
         versionName "1.0"
+        buildConfigField("String", "API_KEY", API_KEY)
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -45,21 +46,25 @@ dependencies {
     implementation (Dependencies.appCompat)
     implementation (Dependencies.androidMaterial)
     implementation (Dependencies.constraintLayout)
-    implementation (TestImplementation.junit)
-    implementation (AndroidTestImplementation.junit)
-    implementation (AndroidTestImplementation.espresso)
-
+    testImplementation (TestImplementation.junit)
+    androidTestImplementation (AndroidTestImplementation.junit)
+    androidTestImplementation (AndroidTestImplementation.espresso)
+    testImplementation(TestImplementation.truth)
+    androidTestImplementation(AndroidTestImplementation.truth)
+    testImplementation(TestImplementation.coroutine)
 
     implementation (Navigation.navigation)
     implementation (Navigation.navigationFragment)
 
     implementation DaggerHilt.hilt
+    implementation DaggerHilt.hiltWorker
     kapt DaggerHilt.hiltAndroidCompiler
     kapt DaggerHilt.hiltCompiler
 
     implementation Retrofit.retrofit
     implementation Retrofit.gsonConvertor
     implementation Retrofit.okHttp
+    implementation Retrofit.loggingInterceptor
 
     implementation(Room.room)
     kapt(Room.roomCompiler)
@@ -79,10 +84,10 @@ dependencies {
 
     implementation(RoundedImageView.roundedImage)
 
+    def work_version = "2.7.1"
 
-    implementation(TestImplementation.truth)
-    implementation(AndroidTestImplementation.truth)
-
+    // Kotlin + coroutines
+    implementation("androidx.work:work-runtime-ktx:$work_version")
 
 
 

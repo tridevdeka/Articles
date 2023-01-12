@@ -4,10 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
+import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -57,7 +59,7 @@ class ArticlesAdapter(
         holder.mBinding.tvArticleTitle.text = article.title
         holder.mBinding.tvArticleAuthor.text = article.author
         article.publishedAt?.let {
-            holder.mBinding.tvArticlePublishedAt.text = getFormattedDate(it)
+//            holder.mBinding.tvArticlePublishedAt.text = getFormattedDate(it)
         }
         holder.mBinding.ivComment.setOnClickListener {
             Toast.makeText(context, "Comment", Toast.LENGTH_SHORT).show()
@@ -73,12 +75,22 @@ class ArticlesAdapter(
             }
         }
         holder.itemView.setOnClickListener {
-            clickListener.onClick(article)
+            val transitionName = it.context.getString(R.string.container_item_card, position)
+            ViewCompat.setTransitionName(it,transitionName)
+            clickListener.onClick(article,it,transitionName)
         }
     }
 
     override fun getItemCount(): Int {
         return differ.currentList.size
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
     }
 
     private fun showBottomSheet(url: String, article: Article) {
@@ -135,7 +147,7 @@ class ArticlesAdapter(
     }
 
     interface ClickListener {
-        fun onClick(article: Article)
+        fun onClick(article: Article, startView: View,transitionName:String)
     }
 
     interface DeleteListener {

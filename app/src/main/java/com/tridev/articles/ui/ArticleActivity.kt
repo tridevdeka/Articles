@@ -3,12 +3,14 @@ package com.tridev.articles.ui
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import com.tridev.articles.R
 import com.tridev.articles.databinding.ActivityArticleBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,9 +26,7 @@ class ArticleActivity : AppCompatActivity() {
         mBinding = ActivityArticleBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
 
-        val toolbar = findViewById<View>(com.tridev.articles.R.id.toolbar) as Toolbar
-        setSupportActionBar(toolbar)
-
+        setSupportActionBar(mBinding.toolbar)
         setupNav()
     }
 

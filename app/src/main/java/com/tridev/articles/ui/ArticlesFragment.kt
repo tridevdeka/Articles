@@ -7,9 +7,12 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tridev.articles.R
@@ -17,6 +20,7 @@ import com.tridev.articles.databinding.FragmentArticlesBinding
 import com.tridev.articles.model.Article
 import com.tridev.articles.ui.adapter.ArticlesAdapter
 import com.tridev.articles.utils.MarginDecoration
+import com.tridev.articles.utils.MaterialMotionUtils.exitTransition
 import com.tridev.articles.utils.Resource
 import com.tridev.articles.viewmodel.ArticleViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,6 +41,7 @@ class ArticlesFragment : Fragment(), ArticlesAdapter.ClickListener {
         mBinding = FragmentArticlesBinding.bind(inflater.inflate(R.layout.fragment_articles,
             container,
             false))
+        postponeEnterTransition()
         return mBinding.root
     }
 
@@ -44,6 +49,10 @@ class ArticlesFragment : Fragment(), ArticlesAdapter.ClickListener {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
         setUpObserver()
+        (view.parent as? ViewGroup)?.doOnPreDraw {
+            // Parent has been drawn. Start transitioning!
+            startPostponedEnterTransition()
+        }
     }
 
     private fun setUpRecyclerView() {
@@ -69,9 +78,19 @@ class ArticlesFragment : Fragment(), ArticlesAdapter.ClickListener {
                 is Resource.Success -> {
                     hideProgressBar()
                     it.data?.let { response ->
-                        articlesAdapter.differ.submitList(response.articles)
-                        Log.d(TAG, response.totalResults.toString())
+                        articlesAdapter.differ.submitList(response)
+//                        Log.d(TAG, response.totalResults.toString())
+                        Log.d(TAG,"SIZE:::"+ articlesAdapter.itemCount.toString())
+
                     }
+
+                }
+                is Resource.NetworkError -> {
+                    Toast.makeText(requireContext(), "Network Error", Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    Toast.makeText(requireContext(), "Something went wrong...", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         })
@@ -85,12 +104,20 @@ class ArticlesFragment : Fragment(), ArticlesAdapter.ClickListener {
         mBinding.progressBar.visibility = GONE
     }
 
-    private fun passData(article: Article) {
+    private fun passData(article: Article, startView: View, transitionName: String) {
         viewModel.shareArticle(article)
-        findNavController().navigate(R.id.action_articlesFragment_to_articleDetailsFragment)
+        val extras = FragmentNavigatorExtras(startView to transitionName)
+        val direction =
+            ArticlesFragmentDirections.actionArticlesFragmentToArticleDetailsFragment(transitionName)
+        findNavController().navigate(
+            direction,
+            extras)
     }
 
-    override fun onClick(article: Article) {
-        passData(article)
+    override fun onClick(article: Article, startView: View, transitionName: String) {
+        passData(article, startView, transitionName)
+        exitTransition()
     }
+
+
 }

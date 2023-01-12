@@ -6,16 +6,22 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.transition.MaterialElevationScale
 import com.tridev.articles.R
 import com.tridev.articles.databinding.FragmentArticleSavedBinding
 import com.tridev.articles.model.Article
 import com.tridev.articles.ui.adapter.ArticlesAdapter
+import com.tridev.articles.utils.ApiConstants
 import com.tridev.articles.utils.MarginDecoration
+import com.tridev.articles.utils.MaterialMotionUtils.exitTransition
+import com.tridev.articles.utils.MaterialMotionUtils.postPoneTransition
 import com.tridev.articles.viewmodel.ArticleViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,13 +41,21 @@ class ArticleSavedFragment : Fragment(), ArticlesAdapter.ClickListener,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView()
         setUpObserver()
+        setupRecyclerView()
+        postPoneTransition()
     }
 
-    private fun passData(article: Article) {
+    private fun passData(article: Article, startView: View, transitionName: String) {
         viewModel.shareArticle(article)
-        findNavController().navigate(R.id.action_articleSavedFragment_to_articleDetailsFragment)
+        val bundle = Bundle().apply {
+            putString(ApiConstants.TRANSITION_NAME, transitionName)
+        }
+        val extras = FragmentNavigatorExtras(startView to transitionName)
+        findNavController().navigate(R.id.action_articleSavedFragment_to_articleDetailsFragment,
+            bundle,
+            null,
+            extras)
     }
 
 
@@ -68,8 +82,9 @@ class ArticleSavedFragment : Fragment(), ArticlesAdapter.ClickListener,
         }
     }
 
-    override fun onClick(article: Article) {
-        passData(article)
+    override fun onClick(article: Article, startView: View, transitionName: String) {
+        passData(article, startView, transitionName)
+        exitTransition()
     }
 
     override fun onDelete(article: Article) {
