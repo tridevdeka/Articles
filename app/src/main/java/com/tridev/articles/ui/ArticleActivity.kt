@@ -1,18 +1,19 @@
 package com.tridev.articles.ui
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import com.tridev.articles.R
 import com.tridev.articles.databinding.ActivityArticleBinding
+import com.tridev.articles.notification.NotificationManager
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -73,5 +74,16 @@ class ArticleActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         navController.popBackStack()
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            NotificationManager.askNotificationPermissionForApi33orAbove(this)
+        }
     }
 }

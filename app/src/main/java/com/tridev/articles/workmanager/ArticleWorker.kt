@@ -4,8 +4,8 @@ import android.content.Context
 import android.util.Log
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
-import androidx.work.Worker
 import androidx.work.WorkerParameters
+import com.tridev.articles.notification.NotificationManager
 import com.tridev.articles.repository.ArticleRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 
 @HiltWorker
 class ArticleWorker @AssistedInject constructor(
-    @Assisted context: Context,
+    @Assisted val context: Context,
     @Assisted parameters: WorkerParameters,
     private val repository: ArticleRepository,
 ) : CoroutineWorker(context, parameters) {
@@ -26,6 +26,7 @@ class ArticleWorker @AssistedInject constructor(
         CoroutineScope(IO).launch {
                 repository.syncArticlesWithWorkManager()
         }
+        NotificationManager.showNotification(context = context)
         return Result.success()
     }
 

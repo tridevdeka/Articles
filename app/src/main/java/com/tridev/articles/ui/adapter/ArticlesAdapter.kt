@@ -59,7 +59,7 @@ class ArticlesAdapter(
         holder.mBinding.tvArticleTitle.text = article.title
         holder.mBinding.tvArticleAuthor.text = article.author
         article.publishedAt?.let {
-//            holder.mBinding.tvArticlePublishedAt.text = getFormattedDate(it)
+            holder.mBinding.tvArticlePublishedAt.text = getFormattedDate(it)
         }
         holder.mBinding.ivComment.setOnClickListener {
             Toast.makeText(context, "Comment", Toast.LENGTH_SHORT).show()
